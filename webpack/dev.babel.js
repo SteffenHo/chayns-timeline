@@ -5,15 +5,6 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import getBaseConfig from './base-config';
 
 const ROOT_PATH = path.resolve('./');
-const ssl = {};
-
-try {
-    ssl.cert = fs.readFileSync(path.join(__dirname, 'ssl', 'ssl.crt'));
-    ssl.key = fs.readFileSync(path.join(__dirname, 'ssl', 'ssl.key'));
-} catch (e) {
-    // eslint-disable-next-line no-console
-    console.log('\n---------------------------\nNo SSL Certificate found.\n---------------------------\n');
-}
 
 export default {
     ...getBaseConfig(true),
@@ -23,8 +14,6 @@ export default {
         historyApiFallback: true,
         compress: true,
         disableHostCheck: true,
-        cert: ssl.cert,
-        key: ssl.key,
         headers: {
             'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
