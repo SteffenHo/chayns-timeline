@@ -5,11 +5,9 @@ import { applyMiddleware, createStore } from 'redux';
 import thunk from 'redux-thunk';
 import App from './components/App';
 import rootReducer from './reducers';
-import { getNews } from './api';
 import { Provider } from 'react-redux';
-import createAsyncAwaitActionMiddleware from 'redux-async-await-action-middleware';
 import { wrap } from './utils/asyncWarapper';
-import { getMashupNews } from './actions/mashupNews';
+import { getMashupEvents, getMashupNews } from './actions/mashupNews';
 
 
 /**
@@ -42,6 +40,7 @@ async function init() {
             <App/>
         </Provider>, tappElement);
         store.dispatch(getMashupNews());
+        store.dispatch(getMashupEvents());S
     } catch (err) {
         console.warn('no chayns environment found', err);
     }
