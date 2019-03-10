@@ -12,4 +12,5 @@ const mashupNews = (state = initialState, action) => {
     }
 };
 
+
 export default mashupNews;

@@ -6,10 +6,9 @@ import './Timeline.css';
 const Timeline = ({ animate, children, className, lineColor }) => (
   <div className="timeline--wrapper">
     <div
-      className={classNames(className, 'timeline', {
+      className={classNames(className, 'timeline', 'chayns__color--white-3', {
         'timeline--animate': animate,
       })}
-      style={{ color: `${lineColor}` }}
     >
       {children}
     </div>
