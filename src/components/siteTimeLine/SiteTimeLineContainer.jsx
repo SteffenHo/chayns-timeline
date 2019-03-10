@@ -6,7 +6,8 @@ const mapStateToProps = (state, ownProps) => {
     const {mashupNews} = state;
     console.log('container', mashupNews);
     return {
-        news: mashupNews.get('news')
+        news: mashupNews.get('news'),
+        events: mashupNews.get('events')
     };
 };
 

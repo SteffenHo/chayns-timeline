@@ -2,14 +2,15 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Gallery from 'chayns-components/lib/react-chayns-gallery/component/Gallery';
 import TextTruncate from 'react-text-truncate';
+import { fromJS } from 'immutable';
 
 
-class NewsItem extends PureComponent {
+class BlogItem extends PureComponent {
 
-    selectTapp = (id) => {
+    selectTapp = (id, tapp) => {
         console.log('click');
         chayns.selectTapp({
-            'id': 91958
+            'id': tapp
         }, "M=" + id);
     }
     render() {
@@ -17,12 +18,12 @@ class NewsItem extends PureComponent {
             headline,
             description,
             postingId,
-            images
+            images, tappId
         } = this.props;
-        const imgList = images.map(url => ({ url }));
+        let imgList = images.map(url => ({ url }));
 
-        const readMore = (<a onClick={() => this.selectTapp(postingId)}>Mehr anzeigen</a>);
-        console.log('imgList', imgList, description);
+
+        const readMore = (<a onClick={() => this.selectTapp(postingId, tappId)}>Mehr anzeigen</a>);
     return (
             <div>
                <h1>{headline}</h1>
@@ -33,7 +34,9 @@ class NewsItem extends PureComponent {
                     textTruncateChild={readMore}
                 />
                 {imgList.size > 0 ?
-                    <Gallery images={imgList.toJS()}/>
+                    <div style={{width: '100%'}}>
+                    <Gallery images={imgList.toJS()} height={200}/>
+                    </div>
                     : ''
                 }
             </div>
@@ -41,17 +44,18 @@ class NewsItem extends PureComponent {
     }
 }
 
-NewsItem.propTypes = {
+BlogItem.propTypes = {
     headline: PropTypes.string,
     description: PropTypes.string,
     postingId: PropTypes.number.isRequired,
-    images: PropTypes.object
+    images: PropTypes.object,
+    tappId: PropTypes.number.isRequired
 };
 
-NewsItem.defaultProps = {
+BlogItem.defaultProps = {
     images: {},
     description: '',
     headline: ''
 };
 
-export default NewsItem;
+export default BlogItem;
