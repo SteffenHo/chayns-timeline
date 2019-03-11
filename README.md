@@ -1,13 +1,7 @@
-[![license](https://img.shields.io/github/license/TobitSoftware/chayns-react-hooks-todo-example.svg)]() [![GitHub pull requests](https://img.shields.io/github/issues-pr/TobitSoftware/chayns-react-hooks-todo-example.svg)]() [![](https://img.shields.io/github/issues-pr-closed-raw/TobitSoftware/chayns-react-hooks-todo-example.svg)]()
 
-chayns® React with Hooks example
+chaynsTimeline
 ===================
-This project is an example for how u can use chayns® + [React][5] with [Hooks][4]. <br>
-It's a simple ToDo-List where u can add, check/uncheck and remove ToDos. The ToDos will be saved in the localstorage.
-
-> **WARNING:** Hooks are a new feature proposal that lets you use state and other React features without writing a class. <br> 
-They’re currently in React v16.7.0-alpha and being discussed in an [open RFC][6]. <br>
-It's also not properly working with [react-hot-loader][7], for now.
+This is a Tapp showing events, news and Blogs ina Timeline.
 
 Development
 -------------
