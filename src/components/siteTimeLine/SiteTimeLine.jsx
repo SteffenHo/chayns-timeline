@@ -55,6 +55,7 @@ class SiteTimeLine extends PureComponent {
                     dateText={toLongDate(element.get('startTimestamp'))}
                     style={{ color: chayns.env.site.color }}
                     dateInnerStyle={{ background: chayns.env.site.color }}
+                    bodyContainerClassName="content__card"
                 >
                     <BlogItem
                         description={element.get('description')}

@@ -29,6 +29,7 @@ class TimelineItem extends Component {
       style,
       className,
       visibilitySensorProps,
+      bodyContainerClassName
     } = this.props;
     const { visible } = this.state;
     return (
@@ -65,7 +66,7 @@ class TimelineItem extends Component {
               <div
                 className={`body-container ${
                   visible ? 'bounce-in' : 'is-hidden'
-                }`}
+                } ${bodyContainerClassName}`}
                 style={bodyContainerStyle}
               >
                 {children}
@@ -96,6 +97,7 @@ TimelineItem.propTypes = {
     PropTypes.node,
   ]),
   visibilitySensorProps: PropTypes.shape({}),
+  bodyContainerClassName: PropTypes.string
 };
 
 TimelineItem.defaultProps = {
@@ -109,6 +111,7 @@ TimelineItem.defaultProps = {
   style: null,
   dateText: '',
   visibilitySensorProps: { partialVisibility: true, offset: { bottom: 50 } },
+  bodyContainerClassName: ''
 };
 
 export default TimelineItem;
