@@ -35,7 +35,7 @@ class BlogItem extends PureComponent {
                 />
                 {imgList.size > 0 ?
                     <div style={{width: '100%'}}>
-                    <Gallery images={imgList.toJS()} height={200}/>
+                    <Gallery images={imgList.toJS()} height={250}/>
                     </div>
                     : ''
                 }
