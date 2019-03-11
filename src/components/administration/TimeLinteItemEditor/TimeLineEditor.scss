@@ -1,0 +1,21 @@
+.header {
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  > * {
+    margin-bottom: 25px;
+  }
+}
+
+.headline {
+  margin-bottom: 25px;
+}
+
+.addButton{
+  text-align: center;
+}
+
+.tappSelect {
+  display: flex;
+  justify-content: space-between;
+}

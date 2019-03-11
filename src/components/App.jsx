@@ -10,6 +10,7 @@ class App extends PureComponent {
         return (
             <div className="tapp">
                 <h1>chaynsTimeline</h1>
+                <TimelLineEditor/>
                 <SiteTimeLineContainer/>
             </div>
         );
