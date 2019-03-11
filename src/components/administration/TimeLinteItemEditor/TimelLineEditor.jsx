@@ -15,7 +15,6 @@ import { fromJS } from 'immutable';
 import { toDate } from '../../../utils/timeHelper';
 
 class TimelLineEditor extends PureComponent {
-
     constructor(props) {
         super(props);
         this.state = { images: [] };
@@ -56,16 +55,16 @@ class TimelLineEditor extends PureComponent {
         });
 
     setDate = async () => {
-        let result = fromJS (await chayns.dialog.advancedDate({preSelect: Date.now}));
-        this.setState({selectedDate: result.get('selectedDates').get(0).get('timestamp')});
+        const result = fromJS(await chayns.dialog.advancedDate({ preSelect: Date.now }));
+        this.setState({ selectedDate: result.get('selectedDates').get(0).get('timestamp') });
     }
 
     render() {
         const { images } = this.state;
-        let list =  this.getTappList();
+        const list = this.getTappList();
         console.log('list', list);
         return (
-            <div className="content__card">
+            <div>
                 <div className="header">
                 <Input
                     placeholder="Überschrift"
@@ -81,20 +80,21 @@ class TimelLineEditor extends PureComponent {
                         position={2}
                         content={{ text: 'Wähle den Tapp aus, auf dem dieser Eintrag verlinken soll' }}
                         minWidth={150}
-                        maxWidth={150}
+                        maxWidth={250}
                     >
                         <p>Ziel Tapp</p>
                     </Tooltip>
                     <ComboBox
                         label="Tapp auswahl"
                         list={list.toJS()}
-                        onSelect={(value) => { console.log(value); }}
+                        onSelect={(value) => { this.setState({ tappId: values.id }); }}
                         listKey="id"
                         listValue="showName"
                     />
                 </div>
-                    <div className="tappSelect">
-                        <div>Datum</div><Button onClick={this.setDate}>{this.state.selectedDate ? toDate(this.state.selectedDate*1000) : 'Wählen'}</Button>
+                    <div className="dateSelect">
+                        <div>Datum</div>
+                        <Button onClick={this.setDate}>{this.state.selectedDate ? toDate(this.state.selectedDate * 1000) : 'Wählen'}</Button>
                     </div>
                 </div>
                 <FileInput

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { fromJS, List } from 'immutable';
 import Timeline from '../timeline/Timeline';
 import TimelineItem from '../timeline/TimelineItem';
-import BlogItem from '../newsItem/BlogItem';
+import BlogItem from '../blogitem/BlogItem';
 import { toLongDate } from '../../utils/timeHelper';
 
 class SiteTimeLine extends PureComponent {

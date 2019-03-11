@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
-import SiteTimeLine from "./siteTimeLine/SiteTimeLine";
 import SiteTimeLineContainer from './siteTimeLine/SiteTimeLineContainer';
-import TimelLineEditor from './administration/TimeLinteItemEditor/TimelLineEditor';
+import Administration from './administration/Administration';
 
 // We use PureComponent instead of Component because it handles the shouldComponentUpdate method for us.
 // If we want to define our own shouldComponentUpdate logic we have to use Component instead of PureComponent.
@@ -10,7 +9,7 @@ class App extends PureComponent {
         return (
             <div className="tapp">
                 <h1>chaynsTimeline</h1>
-                <TimelLineEditor/>
+                <Administration/>
                 <SiteTimeLineContainer/>
             </div>
         );

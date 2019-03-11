@@ -14,8 +14,15 @@
 .addButton{
   text-align: center;
 }
+.dateSelect {
+  display: flex;
+  justify-content: space-between;
+}
 
 .tappSelect {
   display: flex;
   justify-content: space-between;
+  > * {
+    width: 50%;
+  }
 }
