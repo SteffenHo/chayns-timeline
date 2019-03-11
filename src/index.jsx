@@ -6,7 +6,6 @@ import thunk from 'redux-thunk';
 import App from './components/App';
 import rootReducer from './reducers';
 import { Provider } from 'react-redux';
-import { wrap } from './utils/asyncWarapper';
 import { getMashupEvents, getMashupNews } from './actions/mashupNews';
 
 
@@ -34,13 +33,13 @@ async function init() {
         );
 
         await chayns.ready;
-
+        chayns.register({apiDialogs:true});
         const tappElement = document.querySelector('#app');
         ReactDOM.render(<Provider store={store}>
             <App/>
         </Provider>, tappElement);
         store.dispatch(getMashupNews());
-        store.dispatch(getMashupEvents());S
+        store.dispatch(getMashupEvents());
     } catch (err) {
         console.warn('no chayns environment found', err);
     }
