@@ -4,6 +4,7 @@ import { fromJS, List } from 'immutable';
 import Timeline from '../timeline/Timeline';
 import TimelineItem from '../timeline/TimelineItem';
 import BlogItem from '../newsItem/BlogItem';
+import { toLongDate } from '../../utils/timeHelper';
 
 class SiteTimeLine extends PureComponent {
     generateNewsItems = () => {
@@ -51,7 +52,7 @@ class SiteTimeLine extends PureComponent {
             return (
                 <TimelineItem
                     key={`${element.get('tyoe')}_${element.get('id')}`}
-                    dateText={`${(time.getDate() < 10 ? '0' : '') + time.getDate()}.${time.getMonth() + 1 < 10 ? '0' : ''}${time.getMonth() + 1}.${time.getFullYear()} ${time.getHours() < 10 ? '0' : ''}${time.getHours()}:${(time.getMinutes() < 10 ? '0' : '')}${time.getMinutes()}`}
+                    dateText={toLongDate(element.get('startTimestamp'))}
                     style={{ color: chayns.env.site.color }}
                     dateInnerStyle={{ background: chayns.env.site.color }}
                 >
