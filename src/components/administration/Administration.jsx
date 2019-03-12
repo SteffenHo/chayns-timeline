@@ -8,7 +8,7 @@ import './administration.scss';
 class Administration extends PureComponent {
     render() {
         return (
-                <div className="administraion_wide" >
+                <div>
                     <Accordion
                         head="Timeline Eintrag erstellen"
                         open
