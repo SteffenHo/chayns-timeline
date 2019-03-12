@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
-import mashupNews from "./mashupNews";
+import content from "./content";
 
 
 export default combineReducers({
-   mashupNews
+   content
 });

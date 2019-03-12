@@ -20,3 +20,14 @@ export const getEventsData = data => ({
 export const getMashupEvents = (skip = 0, take = 10) => (dispatch) => {
     getEvents(skip, take).then((data) => dispatch(getEventsData(fromJS(data))));
 };
+
+export const SET_BLOG_DATA = 'SET_BLOG_DATA';
+export const setBlogData = data => ({
+    type: SET_BLOG_DATA,
+    data
+});
+export const saveBlogElement = (element) => (dispatch, getState) => {
+    const {content} = getState();
+    console.log('saveBlogElement', element, content);
+    dispatch(setBlogData(content.get('blogs').push(element)));
+};

@@ -1,0 +1,30 @@
+.select_group{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.swatch{
+  width: 95px;
+  margin-left: 130px;
+}
+
+.popover{
+  position: absolute;
+  z-Index: 2;
+}
+.cover{
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.swatch__color-inner{
+  width: 65px;
+  height: 14px;
+  border-Radius: 2px;
+}

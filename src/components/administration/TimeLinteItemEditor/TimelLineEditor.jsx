@@ -11,7 +11,7 @@ import Tooltip from 'chayns-components/lib/react-chayns-tooltip/component/Toolti
 
 
 import './TimeLineEditor.scss';
-import { fromJS } from 'immutable';
+import { fromJS, List } from 'immutable';
 import { toDate } from '../../../utils/timeHelper';
 
 class TimelLineEditor extends PureComponent {
@@ -38,15 +38,40 @@ class TimelLineEditor extends PureComponent {
         this.setState({ images: img });
     };
 
-    upload = () => {
+    upload = async () => {
         const { images } = this.state;
-        images.forEach(async (image) => {
+        let list = new List();
+         await Promise.all(images.map( async (image) => {
             const result = await imageUpload(image.file || image.url, 'componentsTestUpload', chayns.env.user.personId, chayns.env.site.id);
             // eslint-disable-next-line no-console
-            console.log('Uploaded image', result);
-            this.logRef.innerText = `${this.logRef.innerText}${result.base}/${result.key}\n`;
-        });
+            result.url = `${result.base}/${result.key}`;
+             list = list.insert(0, fromJS(result));
+        }));
+        this.setState({imageList: list});
     };
+
+    save = async () => {
+        chayns.showWaitCursor();
+        await this.upload();
+        const {
+            imageList,
+            headline,
+            description,
+            selectedDate,
+            tappId
+        } = this.state;
+
+        const newBlog = fromJS({
+            headline,
+            description,
+            tappId,
+            startTimestamp: selectedDate,
+            imageList: imageList.map((img) => img.get('url')),
+            id: Date.now()
+        });
+        this.props.saveBlog(newBlog);
+        chayns.hideWaitCursor();
+    }
 
     getTappList = () => fromJS(chayns.env.site.tapps).filter((tapp) => {
             if (tapp.get('userGroupIds').size === 0 && tapp.get('id') > 0 && tapp.get('sortId') > 0) {
@@ -56,7 +81,7 @@ class TimelLineEditor extends PureComponent {
 
     setDate = async () => {
         const result = fromJS(await chayns.dialog.advancedDate({ preSelect: Date.now }));
-        this.setState({ selectedDate: result.get('selectedDates').get(0).get('timestamp') });
+        this.setState({ selectedDate: (result.get('selectedDates').get(0).get('timestamp')) * 1000 });
     }
 
     render() {
@@ -69,10 +94,13 @@ class TimelLineEditor extends PureComponent {
                 <Input
                     placeholder="Überschrift"
                     className="headline"
+                    onChange={(data) => this.setState({headline: data})}
                 />
                 <TextArea
-                    placeholder="Text!"
+                    placeholder="Text"
                     autogrow
+                    onChange={(data) => this.setState({description: data})}
+
                 />
                 <div className="tappSelect">
                     <Tooltip
@@ -87,14 +115,14 @@ class TimelLineEditor extends PureComponent {
                     <ComboBox
                         label="Tapp auswahl"
                         list={list.toJS()}
-                        onSelect={(value) => { this.setState({ tappId: values.id }); }}
+                        onSelect={(value) => { this.setState({ tappId: value.id }); }}
                         listKey="id"
                         listValue="showName"
                     />
                 </div>
                     <div className="dateSelect">
                         <div>Datum</div>
-                        <Button onClick={this.setDate}>{this.state.selectedDate ? toDate(this.state.selectedDate * 1000) : 'Wählen'}</Button>
+                        <Button onClick={this.setDate}>{this.state.selectedDate ? toDate(this.state.selectedDate) : 'Wählen'}</Button>
                     </div>
                 </div>
                 <FileInput
@@ -119,19 +147,18 @@ class TimelLineEditor extends PureComponent {
                 <div className="addButton">
                 <Button
                     disabled={!images}
-                    onClick={this.upload}
+                    onClick={this.save}
                 >
                     {'Hinzufügen'}
                 </Button>
                 </div>
-                <p ref={ref => this.logRef = ref}/>
             </div>
         );
     }
 }
 
 TimelLineEditor.propTypes = {
-
+    saveBlog: PropTypes.func.isRequired
 };
 
 TimelLineEditor.defaultProps = {

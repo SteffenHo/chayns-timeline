@@ -4,6 +4,7 @@ import Gallery from 'chayns-components/lib/react-chayns-gallery/component/Galler
 import TextTruncate from 'react-text-truncate';
 import { fromJS } from 'immutable';
 
+import './blogItem.scss'
 
 class BlogItem extends PureComponent {
 
@@ -34,7 +35,7 @@ class BlogItem extends PureComponent {
                     textTruncateChild={readMore}
                 />
                 {imgList.size > 0 ?
-                    <div style={{width: '100%'}}>
+                    <div className="blog__gallery">
                     <Gallery images={imgList.toJS()} height={250}/>
                     </div>
                     : ''
