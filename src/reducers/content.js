@@ -1,5 +1,5 @@
 import { List, Map } from 'immutable';
-import { GET_EVENTS_DATA, GET_NEWS_DATA } from '../actions/mashupNews';
+import { GET_EVENTS_DATA, GET_NEWS_DATA } from '../actions/content';
 
 export const initialState = Map({
         news: new List(),
@@ -7,7 +7,7 @@ export const initialState = Map({
     }
 );
 
-const mashupNews = (state = initialState, action) => {
+const content = (state = initialState, action) => {
     switch (action.type) {
         case GET_NEWS_DATA:
             return state.set('news', action.data);
@@ -19,4 +19,4 @@ const mashupNews = (state = initialState, action) => {
 };
 
 
-export default mashupNews;
+export default content;

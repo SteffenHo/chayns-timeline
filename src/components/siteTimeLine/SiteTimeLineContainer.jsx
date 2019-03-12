@@ -1,13 +1,13 @@
 import { connect } from 'react-redux';
 import SiteTimeLine from './SiteTimeLine';
-import { getMashupNews } from '../../actions/mashupNews';
+import { getMashupNews } from '../../actions/content';
 
 const mapStateToProps = (state, ownProps) => {
-    const {mashupNews} = state;
-    console.log('container', mashupNews);
+    const {content} = state;
+    console.log('container', content);
     return {
-        news: mashupNews.get('news'),
-        events: mashupNews.get('events')
+        news: content.get('news'),
+        events: content.get('events')
     };
 };
 
