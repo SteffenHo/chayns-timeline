@@ -21,7 +21,6 @@ class Item extends PureComponent {
         super(props);
         this.state = {
             formatId: 1,
-            show: false,
             displayColorPicker: false,
             color: chayns.env.site.color
         };
@@ -50,41 +49,11 @@ class Item extends PureComponent {
     };
 
     render() {
-        const { show, color } = this.state;
-
-        const popover = {
-            position: 'absolute',
-            zIndex: '2',
-        };
-        const cover = {
-            position: 'fixed',
-            top: '0px',
-            right: '0px',
-            bottom: '0px',
-            left: '0px',
-        };
-
-        const styles = reactCSS({
-            default: {
-                color: {
-                    width: '65px',
-                    height: '14px',
-                    borderRadius: '2px',
-                    background: `${color}`,
-                }
-            },
-        });
+        const {color } = this.state;
+        const {show} = this.props;
 
         return (
             <div >
-                <Checkbox
-                    onChange={(data) => {
-                        this.setState({ show: data });
-                    }}
-                    checked={show}
-                >
-                    {'Anzeigen'}
-                </Checkbox>
                 {!show ? false : (
                     <div>
                         <Source/>
@@ -175,6 +144,7 @@ class Item extends PureComponent {
 }
 
 Item.propTypes = {
+    show: PropTypes.bool.isRequired
 };
 
 Item.defaultProps = {
