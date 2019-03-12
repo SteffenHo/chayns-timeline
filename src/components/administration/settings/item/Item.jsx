@@ -4,17 +4,27 @@ import { fromJS } from 'immutable';
 import Checkbox from 'chayns-components/lib/react-chayns-checkbox/component/Checkbox';
 import ComboBox from 'chayns-components/lib/react-chayns-combobox/component/ComboBox';
 import Tooltip from 'chayns-components/lib/react-chayns-tooltip/component/Tooltip';
+import { ChromePicker } from 'react-color';
+import ChooseButton from 'chayns-components/lib/react-chayns-button/component/Button';
+import reactCSS from 'reactcss';
 import Timeline from '../../../timeline/Timeline';
 import TimelineItem from '../../../timeline/TimelineItem';
 import BlogItem from '../../../blogitem/BlogItem';
 import { toDate, toLongDate } from '../../../../utils/timeHelper';
 
+
 import './item.scss';
+import Source from '../source/Source';
 
 class Item extends PureComponent {
     constructor(props) {
         super(props);
-        this.state = { formatId: 1, show: false };
+        this.state = {
+            formatId: 1,
+            show: false,
+            displayColorPicker: false,
+            color: chayns.env.site.color
+        };
     }
 
 
@@ -25,10 +35,46 @@ class Item extends PureComponent {
             return toDate(Date.now());
         }
             return toLongDate(Date.now());
-    }
+    };
+
+    handleClick = () => {
+        this.setState({ displayColorPicker: !this.state.displayColorPicker });
+    };
+
+    handleClose = () => {
+        this.setState({ displayColorPicker: false });
+    };
+
+    handleChange = (color) => {
+        this.setState({ color: color.hex });
+    };
 
     render() {
-        const { show } = this.state;
+        const { show, color } = this.state;
+
+        const popover = {
+            position: 'absolute',
+            zIndex: '2',
+        };
+        const cover = {
+            position: 'fixed',
+            top: '0px',
+            right: '0px',
+            bottom: '0px',
+            left: '0px',
+        };
+
+        const styles = reactCSS({
+            default: {
+                color: {
+                    width: '65px',
+                    height: '14px',
+                    borderRadius: '2px',
+                    background: `${color}`,
+                }
+            },
+        });
+
         return (
             <div >
                 <Checkbox
@@ -41,6 +87,9 @@ class Item extends PureComponent {
                 </Checkbox>
                 {!show ? false : (
                     <div>
+                        <Source/>
+                        <div>
+                            <h3>Design</h3>
                         <div className="select_group">
                             <Tooltip
                                 bindListeners
@@ -67,12 +116,43 @@ class Item extends PureComponent {
                                 listValue="format"
                             />
                         </div>
+                        <div className="select_group">
+                            <Tooltip
+                                bindListeners
+                                position={2}
+                                content={{ text: 'Entscheide welche Farbe genutzt werden soll' }}
+                                minWidth={150}
+                                maxWidth={250}
+                            >
+                                <p>Farbe</p>
+                            </Tooltip>
+
+                            <div>
+                                <ChooseButton
+                                    className="swatch"
+                                    style={{ backgroundColor: color }}
+                                    onClick={this.handleClick}
+                                >
+                                {color}
+                                </ChooseButton>
+                                { this.state.displayColorPicker ? (
+                                    <div className="popover">
+                                        <div className="cover" onClick={this.handleClose}/>
+                                        <ChromePicker
+                                            color={color}
+                                            onChange={this.handleChange}
+                                        />
+                                    </div>
+                                ) : null }
+                            </div>
+                        </div>
+                        </div>
                         <Timeline>
                             <TimelineItem
                                 key="item_1"
                                 dateText={this.formatedDate()}
-                                style={{ color: chayns.env.site.color }}
-                                dateInnerStyle={{ background: chayns.env.site.color }}
+                                style={{ color }}
+                                dateInnerStyle={{ background: color }}
                                 bodyContainerClassName="content__card"
                             >
                                 <BlogItem
@@ -85,7 +165,8 @@ class Item extends PureComponent {
                                 />
                             </TimelineItem>
                         </Timeline>
-                    </div>)
+                    </div>
+)
                 }
             </div>
 
