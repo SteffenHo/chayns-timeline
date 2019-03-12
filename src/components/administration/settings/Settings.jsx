@@ -2,22 +2,21 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { fromJS } from 'immutable';
 import Checkbox from 'chayns-components/lib/react-chayns-checkbox/component/Checkbox';
+import Accordion from 'chayns-components/lib/react-chayns-accordion/component/Accordion';
 
 import  './setting.scss'
+import Item from './item/Item';
 
 class Settings extends PureComponent {
 
     render() {
         return (
             <div className="timelineSettings">
-                <Checkbox
-                    onChange={(data) => {
-                        console.log(data);
-                    }}
-                    checked
-                >
-                    {'News'}
-                </Checkbox>
+                <Accordion head="News">
+                    <div className="accordion__content">
+                        <Item/>
+                    </div>
+                </Accordion>
                 <Checkbox
                     onChange={(data) => {
                         console.log(data);
