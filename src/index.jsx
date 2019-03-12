@@ -6,7 +6,7 @@ import thunk from 'redux-thunk';
 import App from './components/App';
 import rootReducer from './reducers';
 import { Provider } from 'react-redux';
-import { getMashupEvents, getMashupNews } from './actions/mashupNews';
+import { getMashupEvents, getMashupNews } from './actions/content';
 
 
 /**

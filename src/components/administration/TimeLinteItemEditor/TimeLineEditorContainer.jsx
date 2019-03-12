@@ -1,10 +1,9 @@
 import { connect } from 'react-redux';
-import SiteTimeLine from './SiteTimeLine';
-import { getMashupNews } from '../../actions/content';
+import TimelLineEditor from './TimelLineEditor';
+import { saveBlogElement } from '../../../actions/content';
 
 const mapStateToProps = (state, ownProps) => {
     const {content} = state;
-    console.log('container', content);
     return {
         news: content.get('news'),
         events: content.get('events'),
@@ -13,12 +12,12 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-    loadNews: () => dispatch(getMashupNews()),
+    saveBlog: (item) => dispatch(saveBlogElement(item))
 });
 
-const SiteTimeLineContainer = connect(
+const TimeLineEditorContainer = connect(
     mapStateToProps,
     mapDispatchToProps
-)(SiteTimeLine);
+)(TimelLineEditor);
 
-export default SiteTimeLineContainer;
+export default TimeLineEditorContainer;

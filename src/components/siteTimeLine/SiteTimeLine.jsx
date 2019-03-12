@@ -10,7 +10,7 @@ class SiteTimeLine extends PureComponent {
     generateNewsItems = () => {
         let elemetns = [];
 
-        const { news, events } = this.props;
+        const { news, events, blogs } = this.props;
         console.log('newsEvents', news, events);
 
         let blogList = new List();
@@ -43,7 +43,23 @@ class SiteTimeLine extends PureComponent {
                 tappId: 71519
             })));
 
-            console.log('bloglist',blogList);
+            console.log('bloglist event',blogList);
+        }
+
+        if(blogs.size > 0) {
+            console.log('events', events);
+            blogList = blogList.concat(blogs.map(e => fromJS({
+                id: e.get('id'),
+                start: new Date(e.get('startTimestamp')),
+                startTimestamp: e.get('startTimestamp'),
+                description: e.get('description'),
+                headline: e.get('headline'),
+                imageList: e.get('imageList'),
+                type: 'blog',
+                tappId: e.get('tappId')
+            })));
+
+            console.log('bloglist blog',blogList);
         }
 
         blogList = blogList.sort((a, b) => b.get('startTimestamp') - a.get('startTimestamp'));
@@ -86,12 +102,14 @@ class SiteTimeLine extends PureComponent {
 SiteTimeLine.propTypes = {
     loadNews: PropTypes.func.isRequired,
     news: PropTypes.object,
-    events: PropTypes.object
+    events: PropTypes.object,
+    blogs: PropTypes.object
 };
 
 SiteTimeLine.defaultProps = {
-    news: {},
-    events: {}
+    news: new List(),
+    events: new List(),
+    blogs: new List()
 };
 
 export default SiteTimeLine;
