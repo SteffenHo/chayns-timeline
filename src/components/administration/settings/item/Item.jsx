@@ -50,13 +50,15 @@ class Item extends PureComponent {
 
     render() {
         const {color } = this.state;
-        const {show} = this.props;
+        const {show, includeSources} = this.props;
 
         return (
             <div >
                 {!show ? false : (
                     <div>
+                        {!includeSources ? false : (
                         <Source/>
+                        )}
                         <div>
                             <h3>Design</h3>
                         <div className="select_group">
@@ -144,10 +146,12 @@ class Item extends PureComponent {
 }
 
 Item.propTypes = {
-    show: PropTypes.bool.isRequired
+    show: PropTypes.bool.isRequired,
+    includeSources: PropTypes.bool
 };
 
 Item.defaultProps = {
+    includeSources: false
 };
 
 export default Item;

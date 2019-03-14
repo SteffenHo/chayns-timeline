@@ -12,17 +12,42 @@ class Settings extends PureComponent {
 
     constructor(props) {
         super(props);
-        this.state = {showNews: false};
+        this.state = {
+            showNews: true,
+            showEvents: true,
+            showBlogs: true
+        };
     }
 
     render() {
-        const {showNews} = this.state;
-        const items = [
+        const {showNews, showEvents, showBlogs} = this.state;
+        const news = [
             {
                 className: null,
                 onClick: () => {
-                    console.log("click", showNews);
                     this.setState({ showNews: !showNews });
+                },
+                text: showNews ? 'Ausblenden' : 'Anzeigen',
+                icon: showNews ? ' fa fa-eye-slash' : 'fa fa-eye',
+            }
+        ];
+
+        const events = [
+            {
+                className: null,
+                onClick: () => {
+                    this.setState({ showEvents: !showEvents });
+                },
+                text: showNews ? 'Ausblenden' : 'Anzeigen',
+                icon: showNews ? ' fa fa-eye-slash' : 'fa fa-eye',
+            }
+        ];
+
+        const blogs = [
+            {
+                className: null,
+                onClick: () => {
+                    this.setState({ showBlogs: !showBlogs });
                 },
                 text: showNews ? 'Ausblenden' : 'Anzeigen',
                 icon: showNews ? ' fa fa-eye-slash' : 'fa fa-eye',
@@ -34,32 +59,45 @@ class Settings extends PureComponent {
                 <Accordion head="News"
                            right={(
                                <ContextMenu
-                                   items={items}
+                                   items={news}
                                    position={1}
                                />
                            )}
                            disabled={!showNews}
-                           open={showNews}
+                           dataGroup="settings"
                 >
                     <div className="accordion__content">
-                        <Item show={showNews}/>
+                        <Item show={showNews} includeSources/>
                     </div>
                 </Accordion>
-                <Checkbox
-                    onChange={(data) => {
-                        console.log(data);
-                    }}
-                    checked
+                <Accordion head="Events"
+                           right={(
+                               <ContextMenu
+                                   items={events}
+                                   position={1}
+                               />
+                           )}
+                           disabled={!showEvents}
+                           dataGroup="settings"
                 >
-                    {'Termine'}
-                </Checkbox>
-                <Checkbox
-                    onChange={(data) => {
-                        console.log(data);
-                    }}
+                    <div className="accordion__content">
+                        <Item show={showEvents}/>
+                    </div>
+                </Accordion>
+                <Accordion head="Blogs"
+                           right={(
+                               <ContextMenu
+                                   items={blogs}
+                                   position={1}
+                               />
+                           )}
+                           disabled={!showBlogs}
+                           dataGroup="settings"
                 >
-                    {'Timeline Elemente'}
-                </Checkbox>
+                    <div className="accordion__content">
+                        <Item show={showBlogs}/>
+                    </div>
+                </Accordion>
             </div>
         );
     }
