@@ -13,10 +13,10 @@ import BlogItem from '../../../blogitem/BlogItem';
 import { toDate, toLongDate } from '../../../../utils/timeHelper';
 
 
-import './item.scss';
+import './design-controls.scss';
 import Source from '../source/Source';
 
-class Item extends PureComponent {
+class DesignControls extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
@@ -145,13 +145,13 @@ class Item extends PureComponent {
     }
 }
 
-Item.propTypes = {
+DesignControls.propTypes = {
     show: PropTypes.bool.isRequired,
     includeSources: PropTypes.bool
 };
 
-Item.defaultProps = {
+DesignControls.defaultProps = {
     includeSources: false
 };
 
-export default Item;
+export default DesignControls;
