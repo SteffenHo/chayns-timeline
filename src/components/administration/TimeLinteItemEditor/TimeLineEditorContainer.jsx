@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import TimelLineEditor from './TimelLineEditor';
+import TimeLineEditor from './TimeLineEditor';
 import { saveBlogElement } from '../../../actions/content';
 
 const mapStateToProps = (state, ownProps) => {
@@ -18,6 +18,6 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 const TimeLineEditorContainer = connect(
     mapStateToProps,
     mapDispatchToProps
-)(TimelLineEditor);
+)(TimeLineEditor);
 
 export default TimeLineEditorContainer;

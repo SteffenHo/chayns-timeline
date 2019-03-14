@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import TimelLineEditor from './TimeLinteItemEditor/TimelLineEditor';
+import TimeLineEditor from './TimeLinteItemEditor/TimeLineEditor';
 import Accordion from 'chayns-components/lib/react-chayns-accordion/component/Accordion'
 import Settings from './settings/Settings';
 
