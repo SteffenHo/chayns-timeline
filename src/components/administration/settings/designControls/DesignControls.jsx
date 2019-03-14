@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { fromJS } from 'immutable';
+import { fromJS, List } from 'immutable';
 import Checkbox from 'chayns-components/lib/react-chayns-checkbox/component/Checkbox';
 import ComboBox from 'chayns-components/lib/react-chayns-combobox/component/ComboBox';
 import Tooltip from 'chayns-components/lib/react-chayns-tooltip/component/Tooltip';
@@ -10,30 +10,45 @@ import reactCSS from 'reactcss';
 import Timeline from '../../../timeline/Timeline';
 import TimelineItem from '../../../timeline/TimelineItem';
 import BlogItem from '../../../blogitem/BlogItem';
-import { toDate, toLongDate } from '../../../../utils/timeHelper';
+import { toDate, toLongDate, toLongMonth, tolongMonth, toShortMonth, toYear } from '../../../../utils/timeHelper';
 
 
 import './design-controls.scss';
 import Source from '../source/Source';
+import {
+    COLOR_TOOLTIP,
+    DATE_FORMAT_SELECT,
+    DATE_TOOLTIP,
+    DEFAULT_DESCRIPTION,
+    DEFAULT_HEADLINE, DEFAULT_IMAGES, SETTINGS_EDITOR_COLOR, SETTINGS_EDITOR_DATE
+} from '../../../../constants/text';
 
 class DesignControls extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            formatId: 1,
             displayColorPicker: false,
-            color: chayns.env.site.color
         };
     }
 
 
     formatedDate= () => {
-        const { formatId } = this.state;
+        const { formatId } = this.props;
 
-        if (formatId === 1) {
-            return toDate(Date.now());
+        switch (formatId) {
+            case 1:
+                return toDate(Date.now());
+            case 2:
+                return toLongDate(Date.now());
+            case 3:
+                return toYear(Date.now());
+            case 4:
+                return toLongMonth(Date.now());
+            case 5:
+                return toShortMonth(Date.now());
+            default:
+                return toDate(Date.now());
         }
-            return toLongDate(Date.now());
     };
 
     handleClick = () => {
@@ -45,19 +60,42 @@ class DesignControls extends PureComponent {
     };
 
     handleChange = (color) => {
-        this.setState({ color: color.hex });
+        const { onChange } = this.props;
+        onChange(fromJS({ settings: { color: color.hex } }));
     };
 
+    handleDateFormatChange = (id) => {
+        const { onChange } = this.props;
+        onChange(fromJS({ setting: { formatId: id } }));
+
+    }
+
     render() {
-        const {color } = this.state;
-        const {show, includeSources} = this.props;
+        const {visible, includeSources, color, onChange, sources} = this.props;
+
+        const list = [{
+            id: 1,
+            format: toDate(Date.now())
+        }, {
+            id: 2,
+            format: toLongDate(Date.now())
+        }, {
+            id: 3,
+            format: toYear(Date.now())
+        }, {
+            id: 5,
+            format: toShortMonth(Date.now())
+        }, {
+            id: 4,
+            format: toLongMonth(Date.now())
+        }]
 
         return (
             <div >
-                {!show ? false : (
+                {!visible ? false : (
                     <div>
                         {!includeSources ? false : (
-                        <Source/>
+                        <Source onChange={onChange} sources={sources}/>
                         )}
                         <div>
                             <h3>Design</h3>
@@ -65,23 +103,17 @@ class DesignControls extends PureComponent {
                             <Tooltip
                                 bindListeners
                                 position={2}
-                                content={{ text: 'Entscheide wie das Datum angezeigt werden soll' }}
+                                content={{ text: DATE_TOOLTIP }}
                                 minWidth={150}
                                 maxWidth={250}
                             >
-                                <p>Datumsformat</p>
+                                <p>{SETTINGS_EDITOR_DATE}</p>
                             </Tooltip>
                             <ComboBox
-                                label="Format auswähl"
-                                list={[{
-                                    id: 1,
-                                    format: toDate(Date.now())
-                                }, {
-                                    id: 2,
-                                    format: toLongDate(Date.now())
-                                }]}
+                                label={DATE_FORMAT_SELECT}
+                                list={list}
                                 onSelect={(value) => {
-                                    this.setState({ formatId: value.id });
+                                    this.handleDateFormatChange(value.id);
                                 }}
                                 listKey="id"
                                 listValue="format"
@@ -91,11 +123,11 @@ class DesignControls extends PureComponent {
                             <Tooltip
                                 bindListeners
                                 position={2}
-                                content={{ text: 'Entscheide welche Farbe genutzt werden soll' }}
+                                content={{ text: COLOR_TOOLTIP + chayns.env.site.color }}
                                 minWidth={150}
                                 maxWidth={250}
                             >
-                                <p>Farbe</p>
+                                <p>{SETTINGS_EDITOR_COLOR}</p>
                             </Tooltip>
 
                             <div>
@@ -129,9 +161,9 @@ class DesignControls extends PureComponent {
                                 <BlogItem
                                     postingId={1234}
                                     tappId={1234}
-                                    headline="Überschrift"
-                                    description="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet."
-                                    images={fromJS(['https://tsimg.cloud/67750-26247/44a4a21d402f677068d1aaf60c708f72b663441b.jpg', 'https://tsimg.cloud/67750-26247/cdccfa04ad6699411fca8413cff3bb97f0ec9377.jpg', 'https://tsimg.cloud/67750-26247/99bc96ecc3e5d1f0f25d68931708ae82ae4e1241.jpg', 'https://tsimg.cloud/67750-26247/ff3aff7c98addb25e1de795d1d971338fb0805cf.jpg'])}
+                                    headline={DEFAULT_HEADLINE}
+                                    description={DEFAULT_DESCRIPTION}
+                                    images={fromJS(DEFAULT_IMAGES)}
                                     startTimestamp={Date.now()}
                                 />
                             </TimelineItem>
@@ -146,12 +178,21 @@ class DesignControls extends PureComponent {
 }
 
 DesignControls.propTypes = {
-    show: PropTypes.bool.isRequired,
-    includeSources: PropTypes.bool
+    visible: PropTypes.bool,
+    onChange: PropTypes.func.isRequired,
+    includeSources: PropTypes.bool,
+    formatId: PropTypes.number,
+    color: PropTypes.string,
+    sources: PropTypes.object
+
 };
 
 DesignControls.defaultProps = {
-    includeSources: false
+    includeSources: false,
+    formatId: 1,
+    color: chayns.env.site.color,
+    visible: false,
+    sources: new List()
 };
 
 export default DesignControls;
