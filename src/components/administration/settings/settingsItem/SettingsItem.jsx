@@ -9,40 +9,42 @@ import DesignControls from '../designControls/DesignControls';
 import { Hide, SHOW } from '../../../../constants/text';
 
 class SettingsItem extends PureComponent {
-
     constructor(props) {
         super(props);
-
     }
 
     render() {
-        const {name, settings, includeSources, onContextMenuChange} = this.props;
+        const {
+ name, settings, includeSources, onChange
+} = this.props;
 
-        let visible = settings.get('visible')
+        const visible = settings.get('visible');
         const list = [
             {
                 className: null,
-                onClick: () => { onContextMenuChange(!visible); },
+                onClick: () => { onChange(fromJS({ settings: { visible: !visible } })); },
                 text: !visible ? SHOW : Hide,
                 icon: !visible ? 'fa fa-eye' : 'fa fa-eye-slash',
             }
         ];
 
         return (
-                <Accordion head={name}
-                           right={(
-                               <ContextMenu
-                                   items={list}
-                                   position={1}
-                               />
-                           )}
-                           disabled={!visible}
-                           dataGroup="settings"
+                <Accordion
+                    head={name}
+                    right={(
+                        <ContextMenu
+                            items={list}
+                            position={1}
+                        />
+                        )}
+                    disabled={!visible}
+                    dataGroup="settings"
                 >
                     <div className="accordion__content">
                         <DesignControls
                             show={visible}
-                            includeSources={includeSources}/>
+                            includeSources={includeSources}
+                        />
                     </div>
                 </Accordion>
         );
@@ -51,7 +53,7 @@ class SettingsItem extends PureComponent {
 
 SettingsItem.propTypes = {
     name: PropTypes.string.isRequired,
-    onContextMenuChange: PropTypes.func.isRequired,
+    onChange: PropTypes.func.isRequired,
     includeSources: PropTypes.bool,
     settings: PropTypes.object.isRequired
 };

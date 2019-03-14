@@ -15,23 +15,23 @@ class Settings extends PureComponent {
     }
 
     render() {
-        const { changeNewsSettings, newsSettings, blogsSettings, eventsSettings } = this.props;
+        const { changeNewsSettings, newsSettings, blogsSettings, eventsSettings, changeBlogsSettings, changeEventsSettings } = this.props;
         return (
             <div className="timelineSettings">
                 <SettingsItem
                     name={EVENTS}
-                    onContextMenuChange={(data) => { console.log('event', data); }}
+                    onChange={changeEventsSettings}
                     settings={eventsSettings}
                 />
                 <SettingsItem
                     name={NEWS}
-                    onContextMenuChange={(data) => { changeNewsSettings( fromJS({settings: { visible: data } })); }}
+                    onChange={changeNewsSettings}
                     settings={newsSettings}
                     includeSources
                 />
                 <SettingsItem
                     name={BLOGS}
-                    onContextMenuChange={(data) => { console.log('blogs', data); }}
+                    onChange={changeBlogsSettings}
                     settings={blogsSettings}
                 />
             </div>
@@ -43,7 +43,10 @@ Settings.propTypes = {
     newsSettings: PropTypes.object.isRequired,
     eventsSettings: PropTypes.object.isRequired,
     blogsSettings: PropTypes.object.isRequired,
-    changeNewsSettings: PropTypes.func.isRequired
+    changeNewsSettings: PropTypes.func.isRequired,
+    changeEventsSettings: PropTypes.func.isRequired,
+    changeBlogsSettings: PropTypes.func.isRequired
+
 };
 
 Settings.defaultProps = {

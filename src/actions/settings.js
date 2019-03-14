@@ -1,5 +1,3 @@
-import { fromJS } from 'immutable';
-import { getEvents } from '../api';
 
 export const SET_NEWS_SETTINGS = 'SET_NEWS_SETTINGS';
 export const patchNewsSettings = data => ({
@@ -7,16 +5,53 @@ export const patchNewsSettings = data => ({
     data
 });
 
-export const setNewsSettings = patchedData => (dispatch, getState) => {
+export const setNewsSettings = patchData => (dispatch, getState) => {
     const { settings } = getState();
     let newsSettings = settings.get('newsSettings');
 
-    patchedData.map((item) => {
+    dispatch(patchNewsSettings(patchSetting(newsSettings, patchData)));
+};
+
+export const SET_EVENTS_SETTINGS = 'SET_EVENTS_SETTINGS';
+export const patchEventSettings = data => ({
+    type: SET_EVENTS_SETTINGS,
+    data
+});
+
+export const setEventSettings = patchData => (dispatch, getState) => {
+    const { settings } = getState();
+    let eventsSettings = settings.get('eventsSettings');
+
+    dispatch(patchEventSettings(patchSetting(eventsSettings, patchData)));
+};
+
+export const SET_BLOGS_SETTINGS = 'SET_BLOGS_SETTINGS';
+export const patchBlogSettings = data => ({
+    type: SET_BLOGS_SETTINGS,
+    data
+});
+
+export const setBlogSettings = patchData => (dispatch, getState) => {
+    const { settings } = getState();
+    let blogsSettings = settings.get('blogsSettings');
+
+    dispatch(patchBlogSettings(patchSetting(blogsSettings, patchData)));
+};
+
+/**
+ * Update the settings map with all data given in the patchData map.
+ * @param setting current settings
+ * @param patchData fields which should be updated in settings
+ * @returns {*} the new settings
+ */
+const patchSetting = (setting, patchData) => {
+    let newSetting = setting;
+    patchData.map((item) => {
         const [...keys] = item.keys();
         for (let i = 0; i < keys.length; i++) {
-            newsSettings = newsSettings.set(keys[i], item.get(keys[i]));
+            newSetting = newSetting.set(keys[i], item.get(keys[i]));
         }
     });
-
-    dispatch(patchNewsSettings(newsSettings));
-};
+    console.log('newSettings', newSetting);
+    return newSetting;
+}
