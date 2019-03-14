@@ -1,3 +1,4 @@
+import { isImmutable } from 'immutable';
 
 export const SET_NEWS_SETTINGS = 'SET_NEWS_SETTINGS';
 export const patchNewsSettings = data => ({
@@ -7,7 +8,7 @@ export const patchNewsSettings = data => ({
 
 export const setNewsSettings = patchData => (dispatch, getState) => {
     const { settings } = getState();
-    let newsSettings = settings.get('newsSettings');
+    const newsSettings = settings.get('newsSettings');
 
     dispatch(patchNewsSettings(patchSetting(newsSettings, patchData)));
 };
@@ -20,7 +21,7 @@ export const patchEventSettings = data => ({
 
 export const setEventSettings = patchData => (dispatch, getState) => {
     const { settings } = getState();
-    let eventsSettings = settings.get('eventsSettings');
+    const eventsSettings = settings.get('eventsSettings');
 
     dispatch(patchEventSettings(patchSetting(eventsSettings, patchData)));
 };
@@ -33,7 +34,7 @@ export const patchBlogSettings = data => ({
 
 export const setBlogSettings = patchData => (dispatch, getState) => {
     const { settings } = getState();
-    let blogsSettings = settings.get('blogsSettings');
+    const blogsSettings = settings.get('blogsSettings');
 
     dispatch(patchBlogSettings(patchSetting(blogsSettings, patchData)));
 };
@@ -44,7 +45,7 @@ export const setBlogSettings = patchData => (dispatch, getState) => {
  * @param patchData fields which should be updated in settings
  * @returns {*} the new settings
  */
-const patchSetting = (setting, patchData) => {
+export function patchSetting(setting, patchData) {
     let newSetting = setting;
     patchData.map((item) => {
         const [...keys] = item.keys();
@@ -54,4 +55,4 @@ const patchSetting = (setting, patchData) => {
     });
     console.log('newSettings', newSetting);
     return newSetting;
-}
+};

@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { fromJS } from 'immutable';
+import { fromJS, List } from 'immutable';
 import Checkbox from 'chayns-components/lib/react-chayns-checkbox/component/Checkbox';
 import Accordion from 'chayns-components/lib/react-chayns-accordion/component/Accordion';
 import ContextMenu from 'chayns-components/lib/react-chayns-contextmenu/component/ContextMenu';
@@ -15,14 +15,21 @@ class SettingsItem extends PureComponent {
 
     render() {
         const {
- name, settings, includeSources, onChange
-} = this.props;
+            name,
+            settings,
+            includeSources,
+            onChange
+        } = this.props;
 
         const visible = settings.get('visible');
+        const color = settings.get('color') || chayns.env.site.color;
+        const formatId = settings.get('formatId') || 1;
+        const sources = settings.get('sources') || new List();
+
         const list = [
             {
                 className: null,
-                onClick: () => { onChange(fromJS({ settings: { visible: !visible } })); },
+                onClick: () => { onChange(fromJS({ settings: { visible: !visible} })); },
                 text: !visible ? SHOW : Hide,
                 icon: !visible ? 'fa fa-eye' : 'fa fa-eye-slash',
             }
@@ -42,8 +49,12 @@ class SettingsItem extends PureComponent {
                 >
                     <div className="accordion__content">
                         <DesignControls
-                            show={visible}
+                            visible={visible}
+                            onChange={onChange}
                             includeSources={includeSources}
+                            color={color}
+                            formatId={formatId}
+                            sources={sources}
                         />
                     </div>
                 </Accordion>
