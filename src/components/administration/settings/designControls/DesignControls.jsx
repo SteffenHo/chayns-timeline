@@ -10,7 +10,15 @@ import reactCSS from 'reactcss';
 import Timeline from '../../../timeline/Timeline';
 import TimelineItem from '../../../timeline/TimelineItem';
 import BlogItem from '../../../blogitem/BlogItem';
-import { toDate, toLongDate, toLongMonth, tolongMonth, toShortMonth, toYear } from '../../../../utils/timeHelper';
+import {
+    formatDateById,
+    toDate,
+    toLongDate,
+    toLongMonth,
+    tolongMonth,
+    toShortMonth,
+    toYear
+} from '../../../../utils/timeHelper';
 
 
 import './design-controls.scss';
@@ -29,27 +37,24 @@ class DesignControls extends PureComponent {
         this.state = {
             displayColorPicker: false,
         };
+        this.dateSelectList = [{
+            id: 1,
+            format: toDate(Date.now())
+        }, {
+            id: 2,
+            format: toLongDate(Date.now())
+        }, {
+            id: 3,
+            format: toYear(Date.now())
+        }, {
+            id: 5,
+            format: toShortMonth(Date.now())
+        }, {
+            id: 4,
+            format: toLongMonth(Date.now())
+        }];
     }
 
-
-    formatedDate= () => {
-        const { formatId } = this.props;
-
-        switch (formatId) {
-            case 1:
-                return toDate(Date.now());
-            case 2:
-                return toLongDate(Date.now());
-            case 3:
-                return toYear(Date.now());
-            case 4:
-                return toLongMonth(Date.now());
-            case 5:
-                return toShortMonth(Date.now());
-            default:
-                return toDate(Date.now());
-        }
-    };
 
     handleClick = () => {
         this.setState({ displayColorPicker: !this.state.displayColorPicker });
@@ -71,24 +76,8 @@ class DesignControls extends PureComponent {
     }
 
     render() {
-        const {visible, includeSources, color, onChange, sources} = this.props;
+        const {visible, includeSources, color, onChange, sources, formatId} = this.props;
 
-        const list = [{
-            id: 1,
-            format: toDate(Date.now())
-        }, {
-            id: 2,
-            format: toLongDate(Date.now())
-        }, {
-            id: 3,
-            format: toYear(Date.now())
-        }, {
-            id: 5,
-            format: toShortMonth(Date.now())
-        }, {
-            id: 4,
-            format: toLongMonth(Date.now())
-        }]
 
         return (
             <div >
@@ -111,7 +100,7 @@ class DesignControls extends PureComponent {
                             </Tooltip>
                             <ComboBox
                                 label={DATE_FORMAT_SELECT}
-                                list={list}
+                                list={this.dateSelectList}
                                 onSelect={(value) => {
                                     this.handleDateFormatChange(value.id);
                                 }}
@@ -153,7 +142,7 @@ class DesignControls extends PureComponent {
                         <Timeline>
                             <TimelineItem
                                 key="item_1"
-                                dateText={this.formatedDate()}
+                                dateText={formatDateById(formatId)}
                                 style={{ color }}
                                 dateInnerStyle={{ background: color }}
                                 bodyContainerClassName="content__card"
