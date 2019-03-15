@@ -3,12 +3,15 @@ import SiteTimeLine from './SiteTimeLine';
 import { getMashupNews } from '../../actions/content';
 
 const mapStateToProps = (state, ownProps) => {
-    const {content} = state;
-    console.log('container', content);
+    const {content, settings} = state;
+    console.log('container', content, settings);
     return {
         news: content.get('news'),
         events: content.get('events'),
-        blogs: content.get('blogs')
+        blogs: content.get('blogs'),
+        newsSettings: settings.get('newsSettings'),
+        eventsSettings: settings.get('eventsSettings'),
+        blogsSettings: settings.get('blogsSettings')
     };
 };
 
