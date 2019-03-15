@@ -1,71 +1,52 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { fromJS } from 'immutable';
-import Checkbox from 'chayns-components/lib/react-chayns-checkbox/component/Checkbox';
-import Accordion from 'chayns-components/lib/react-chayns-accordion/component/Accordion';
-import ContextMenu from 'chayns-components/lib/react-chayns-contextmenu/component/ContextMenu';
+import { fromJS, Map } from 'immutable';
 
-import  './setting.scss'
-import Item from './item/Item';
+import './setting.scss';
+import DesignControls from './designControls/DesignControls';
+import {
+ BLOGS, EVENTS, Hide, NEWS, SHOW
+} from '../../../constants/text';
+import SettingsItem from './settingsItem/SettingsItem';
 
 class Settings extends PureComponent {
-
     constructor(props) {
         super(props);
-        this.state = {showNews: false};
     }
 
     render() {
-        const {showNews} = this.state;
-        const items = [
-            {
-                className: null,
-                onClick: () => {
-                    console.log("click", showNews);
-                    this.setState({ showNews: !showNews });
-                },
-                text: showNews ? 'Ausblenden' : 'Anzeigen',
-                icon: showNews ? ' fa fa-eye-slash' : 'fa fa-eye',
-            }
-        ];
-
+        const { changeNewsSettings, newsSettings, blogsSettings, eventsSettings, changeBlogsSettings, changeEventsSettings } = this.props;
         return (
             <div className="timelineSettings">
-                <Accordion head="News"
-                           right={(
-                               <ContextMenu
-                                   items={items}
-                                   position={1}
-                               />
-                           )}
-                           disabled={!showNews}
-                           open={showNews}
-                >
-                    <div className="accordion__content">
-                        <Item show={showNews}/>
-                    </div>
-                </Accordion>
-                <Checkbox
-                    onChange={(data) => {
-                        console.log(data);
-                    }}
-                    checked
-                >
-                    {'Termine'}
-                </Checkbox>
-                <Checkbox
-                    onChange={(data) => {
-                        console.log(data);
-                    }}
-                >
-                    {'Timeline Elemente'}
-                </Checkbox>
+                <SettingsItem
+                    name={EVENTS}
+                    onChange={changeEventsSettings}
+                    settings={eventsSettings}
+                />
+                <SettingsItem
+                    name={NEWS}
+                    onChange={changeNewsSettings}
+                    settings={newsSettings}
+                    includeSources
+                />
+                <SettingsItem
+                    name={BLOGS}
+                    onChange={changeBlogsSettings}
+                    settings={blogsSettings}
+                />
             </div>
         );
     }
 }
 
 Settings.propTypes = {
+    newsSettings: PropTypes.object.isRequired,
+    eventsSettings: PropTypes.object.isRequired,
+    blogsSettings: PropTypes.object.isRequired,
+    changeNewsSettings: PropTypes.func.isRequired,
+    changeEventsSettings: PropTypes.func.isRequired,
+    changeBlogsSettings: PropTypes.func.isRequired
+
 };
 
 Settings.defaultProps = {

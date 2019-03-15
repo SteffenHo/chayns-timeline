@@ -1,20 +1,33 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { fromJS, List } from 'immutable';
+import { fromJS, List, Map } from 'immutable';
 import Timeline from '../timeline/Timeline';
 import TimelineItem from '../timeline/TimelineItem';
 import BlogItem from '../blogitem/BlogItem';
-import { toLongDate } from '../../utils/timeHelper';
+import { formatDateById, toLongDate } from '../../utils/timeHelper';
 
 class SiteTimeLine extends PureComponent {
     generateNewsItems = () => {
         let elemetns = [];
 
-        const { news, events, blogs } = this.props;
-        console.log('newsEvents', news, events);
+        const { news, events, blogs, eventsSettings, newsSettings, blogsSettings } = this.props;
+        console.log('newsEvents', eventsSettings,events);
+
+        const eventVisible = eventsSettings.get('visible');
+        const eventFormatId = eventsSettings.get('formatId') || 1;
+        const eventcolor = eventsSettings.get('color') || chayns.env.site.color;
+
+        const newsVisible = newsSettings.get('visible')
+        const newsFormatId = newsSettings.get('formatId') || 1;
+        const newsColor = newsSettings.get('color') || chayns.env.site.color;
+
+        const blogsVisible = blogsSettings.get('visible');
+        const blogsFormatId = blogsSettings.get('formatId') || 1;
+        const blogsColor = blogsSettings.get('color') || chayns.env.site.color;
+
 
         let blogList = new List();
-        if(news.size > 0) {
+        if(news.size > 0 && newsVisible) {
             console.log('tada')
             blogList = news.map(n => fromJS({
                 id: n.get('id'),
@@ -24,11 +37,13 @@ class SiteTimeLine extends PureComponent {
                 headline: n.get('headline'),
                 imageList: n.get('imageList'),
                 type: 'news',
-                tappId: 91958
+                tappId: 91958,
+                formatId: newsFormatId,
+                color: newsColor
             }));
         }
 
-        if(events.size > 0) {
+        if(events.size > 0 && eventVisible) {
             console.log('events', events);
             blogList = blogList.concat(events.map(e => fromJS({
                 id: e.get('id'),
@@ -40,13 +55,15 @@ class SiteTimeLine extends PureComponent {
                 headline: e.get('name'),
                 imageList: fromJS([e.getIn(['picture', 'link'])]),
                 type: 'events',
-                tappId: 71519
+                tappId: 71519,
+                formatId: eventFormatId,
+                color: eventcolor
             })));
 
             console.log('bloglist event',blogList);
         }
 
-        if(blogs.size > 0) {
+        if(blogs.size > 0 && blogsVisible) {
             console.log('events', events);
             blogList = blogList.concat(blogs.map(e => fromJS({
                 id: e.get('id'),
@@ -56,7 +73,9 @@ class SiteTimeLine extends PureComponent {
                 headline: e.get('headline'),
                 imageList: e.get('imageList'),
                 type: 'blog',
-                tappId: e.get('tappId')
+                tappId: e.get('tappId'),
+                formatId: blogsFormatId,
+                color: blogsColor
             })));
 
             console.log('bloglist blog',blogList);
@@ -68,9 +87,9 @@ class SiteTimeLine extends PureComponent {
             return (
                 <TimelineItem
                     key={`${element.get('tyoe')}_${element.get('id')}`}
-                    dateText={toLongDate(element.get('startTimestamp'))}
-                    style={{ color: chayns.env.site.color }}
-                    dateInnerStyle={{ background: chayns.env.site.color }}
+                    dateText={formatDateById(element.get('formatId'), element.get('startTimestamp'))}
+                    style={{ color: element.get('color') }}
+                    dateInnerStyle={{ background: element.get('color') }}
                     bodyContainerClassName="content__card"
                 >
                     <BlogItem
@@ -103,13 +122,19 @@ SiteTimeLine.propTypes = {
     loadNews: PropTypes.func.isRequired,
     news: PropTypes.object,
     events: PropTypes.object,
-    blogs: PropTypes.object
+    blogs: PropTypes.object,
+    newsSettings: PropTypes.object,
+    blogsSettings: PropTypes.object,
+    eventsSettings: PropTypes.object,
 };
 
 SiteTimeLine.defaultProps = {
     news: new List(),
     events: new List(),
-    blogs: new List()
+    blogs: new List(),
+    eventsSettings: new Map(),
+    blogsSettings: new Map(),
+    newsSettings: new Map()
 };
 
 export default SiteTimeLine;

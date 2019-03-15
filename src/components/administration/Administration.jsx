@@ -1,10 +1,11 @@
 import React, { PureComponent } from 'react';
-import TimelLineEditor from './TimeLinteItemEditor/TimelLineEditor';
+import TimeLineEditor from './TimeLinteItemEditor/TimeLineEditor';
 import Accordion from 'chayns-components/lib/react-chayns-accordion/component/Accordion'
 import Settings from './settings/Settings';
 
 import './administration.scss';
 import TimeLineEditorContainer from './TimeLinteItemEditor/TimeLineEditorContainer';
+import SettingsContainer from './settings/SettingsContainer';
 
 class Administration extends PureComponent {
     render() {
@@ -25,7 +26,7 @@ class Administration extends PureComponent {
                         open
                     >
                         <div className="accordion__content">
-                            <Settings/>
+                            <SettingsContainer/>
                         </div>
                     </Accordion>
                 </div>

@@ -14,7 +14,7 @@ import './TimeLineEditor.scss';
 import { fromJS, List } from 'immutable';
 import { toDate } from '../../../utils/timeHelper';
 
-class TimelLineEditor extends PureComponent {
+class TimeLineEditor extends PureComponent {
     constructor(props) {
         super(props);
         this.state = { images: [] };
@@ -157,12 +157,12 @@ class TimelLineEditor extends PureComponent {
     }
 }
 
-TimelLineEditor.propTypes = {
+TimeLineEditor.propTypes = {
     saveBlog: PropTypes.func.isRequired
 };
 
-TimelLineEditor.defaultProps = {
+TimeLineEditor.defaultProps = {
 
 };
 
-export default TimelLineEditor;
+export default TimeLineEditor;
