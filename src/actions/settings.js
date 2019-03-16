@@ -1,4 +1,5 @@
-import { isImmutable } from 'immutable';
+import { fromJS } from 'immutable';
+import { postSettings } from '../api';
 
 export const SET_NEWS_SETTINGS = 'SET_NEWS_SETTINGS';
 export const patchNewsSettings = data => ({
@@ -11,6 +12,7 @@ export const setNewsSettings = patchData => (dispatch, getState) => {
     const newsSettings = settings.get('newsSettings');
 
     dispatch(patchNewsSettings(patchSetting(newsSettings, patchData)));
+    dispatch(saveSettings());
 };
 
 export const SET_EVENTS_SETTINGS = 'SET_EVENTS_SETTINGS';
@@ -24,6 +26,7 @@ export const setEventSettings = patchData => (dispatch, getState) => {
     const eventsSettings = settings.get('eventsSettings');
 
     dispatch(patchEventSettings(patchSetting(eventsSettings, patchData)));
+    dispatch(saveSettings());
 };
 
 export const SET_BLOGS_SETTINGS = 'SET_BLOGS_SETTINGS';
@@ -37,6 +40,7 @@ export const setBlogSettings = patchData => (dispatch, getState) => {
     const blogsSettings = settings.get('blogsSettings');
 
     dispatch(patchBlogSettings(patchSetting(blogsSettings, patchData)));
+    dispatch(saveSettings());
 };
 
 /**
@@ -55,4 +59,17 @@ export function patchSetting(setting, patchData) {
     });
     console.log('newSettings', newSetting);
     return newSetting;
+}
+
+
+export const SAVE_SETTINGS = 'SAVE_SETTINGS';
+export const saveTappSettings = data => ({
+    type: SAVE_SETTINGS,
+    data
+});
+
+export const saveSettings = () => (dispatch, getState) => {
+    const state = getState();
+    const settings = fromJS({ eventsSettings: state.settings.get('eventsSettings'), newsSettings: state.settings.get('newsSettings'), blogsSettings: state.settings.get('blogsSettings') });
+    postSettings(settings).then(data => dispatch(saveTappSettings(fromJS(data))));
 };

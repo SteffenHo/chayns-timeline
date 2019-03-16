@@ -24,3 +24,20 @@ export const getEvents = async (skip, take) => {
     console.log("fetch events", json);
     return json;
 };
+
+export const postSettings = async (data) => {
+    const url = `https://mashup.tobit.com/api/tappsettings/v1.0/${chayns.env.site.locationId}/${chayns.env.site.tapp.id}`;
+    const body = JSON.stringify(data.toJS());
+    const config =  {
+        body,
+        method: "POST",
+        headers: {
+            Authorization : `Bearer ${chayns.env.user.tobitAccessToken}`,
+            "Content-Type": "application/json",
+        }
+    };
+    const response = await fetch(url, config);
+    const json = await response.json();
+    console.log("save settings", json);
+    return json;
+}

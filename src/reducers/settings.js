@@ -1,10 +1,11 @@
 import { List, Map } from 'immutable';
-import { SET_BLOGS_SETTINGS, SET_EVENTS_SETTINGS, SET_NEWS_SETTINGS } from '../actions/settings';
+import { SAVE_SETTINGS, SET_BLOGS_SETTINGS, SET_EVENTS_SETTINGS, SET_NEWS_SETTINGS } from '../actions/settings';
 
 export const initialState = Map({
         newsSettings: new Map(),
         eventsSettings: new Map(),
-        blogsSettings: new Map()
+        blogsSettings: new Map(),
+        saveResult: new Map()
     }
 );
 
@@ -16,6 +17,8 @@ const settings = (state = initialState, action) => {
             return state.set('blogsSettings', action.data);
         case SET_EVENTS_SETTINGS:
             return state.set('eventsSettings', action.data);
+        case SAVE_SETTINGS:
+            return state.set('saveResult', action.data);
         default:
             return state;
     }
