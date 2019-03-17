@@ -16,7 +16,7 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-    loadNews: () => dispatch(getMashupNews()),
+    loadNews: (timestamp) => dispatch(getMashupNews(timestamp)),
 });
 
 const SiteTimeLineContainer = connect(

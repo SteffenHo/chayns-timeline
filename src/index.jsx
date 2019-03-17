@@ -6,7 +6,8 @@ import thunk from 'redux-thunk';
 import App from './components/App';
 import rootReducer from './reducers';
 import { Provider } from 'react-redux';
-import { getMashupEvents, getMashupNews } from './actions/content';
+import { getBlogs, getMashupEvents, getMashupNews } from './actions/content';
+import { loadSettings } from './actions/settings';
 
 
 /**
@@ -38,6 +39,8 @@ async function init() {
         ReactDOM.render(<Provider store={store}>
             <App/>
         </Provider>, tappElement);
+        store.dispatch(loadSettings());
+        store.dispatch(getBlogs());
         store.dispatch(getMashupNews());
         store.dispatch(getMashupEvents());
     } catch (err) {
