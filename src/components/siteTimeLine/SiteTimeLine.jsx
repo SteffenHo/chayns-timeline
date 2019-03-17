@@ -7,6 +7,22 @@ import BlogItem from '../blogitem/BlogItem';
 import { formatDateById, toLongDate } from '../../utils/timeHelper';
 
 class SiteTimeLine extends PureComponent {
+
+    load = () => {
+        const { news, loadNews } = this.props;
+        let timestamp = Number.MAX_SAFE_INTEGER;
+        news.map((item) => { item.get('publishTimestamp') < timestamp ? timestamp = item.get('publishTimestamp') : false});
+        loadNews(timestamp);
+    }
+    componentDidMount() {
+        chayns.addScrollListener((data) => {
+            if(data.windowMetrics.AvailHeight-data.windowMetrics.WindowScrollTop < data.windowMetrics.WindowInnerHeight){
+                console.log('scrollDown');
+                this.load();
+            }
+        });
+    }
+
     generateNewsItems = () => {
         let elemetns = [];
 

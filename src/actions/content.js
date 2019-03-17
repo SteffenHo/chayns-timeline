@@ -2,6 +2,7 @@ import { fromJS, List } from 'immutable';
 import {
  getEvents, getNews, loadBlogs, postBlog, postBlogs
 } from '../api';
+import { SET_NEWS_SETTINGS } from './settings';
 
 export const GET_NEWS_DATA = 'GET_NEWS_DATA';
 export const getNewsData = data => ({
@@ -9,8 +10,27 @@ export const getNewsData = data => ({
     data
 });
 
-export const getMashupNews = (timestamp = Date.now()) => (dispatch) => {
-    getNews(timestamp).then(data => dispatch(getNewsData(fromJS(data).get('itemList'))));
+export const IS_LOADING_NEWS_SETTINGS = 'IS_LOADING_NEWS_SETTINGS';
+export const setIsLoadingNews = data => ({
+    type: IS_LOADING_NEWS_SETTINGS,
+    data
+});
+
+export const getMashupNews = (timestamp = Date.now()) => (dispatch, getState) => {
+    const state = getState();
+    const constent = state.content;
+    const isLoadingNews = constent.get('isLoadingNews');
+    const news = constent.get('news');
+    console.log('news get', news);
+    if(!isLoadingNews) {
+        dispatch(setIsLoadingNews(true));
+        console.log('loadingNews');
+        getNews(timestamp)
+            .then(data => {
+                dispatch(getNewsData(news.concat(fromJS(data).get('itemList'))));
+                dispatch(setIsLoadingNews(false));
+            });
+    }
 };
 
 export const GET_EVENTS_DATA = 'GET_EVENTS_DATA';

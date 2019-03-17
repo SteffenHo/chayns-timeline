@@ -7,6 +7,8 @@ export const patchNewsSettings = data => ({
     data
 });
 
+
+
 export const setNewsSettings = patchData => (dispatch, getState) => {
     const { settings } = getState();
     const newsSettings = settings.get('newsSettings');
