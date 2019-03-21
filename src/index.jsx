@@ -8,6 +8,7 @@ import rootReducer from './reducers';
 import { Provider } from 'react-redux';
 import { getBlogs, getMashupEvents, getMashupNews } from './actions/content';
 import { loadSettings } from './actions/settings';
+import { initTextstring } from './utils/textString';
 
 
 /**
@@ -27,7 +28,6 @@ async function init() {
             storeMiddleware.push(require('redux-logger').default);
         }
 
-        console.log(storeMiddleware);
         const store = createStore(
             rootReducer,
             applyMiddleware(...storeMiddleware)
@@ -35,6 +35,8 @@ async function init() {
 
         await chayns.ready;
         chayns.register({apiDialogs:true});
+
+        initTextstring();
         const tappElement = document.querySelector('#app');
         ReactDOM.render(<Provider store={store}>
             <App/>

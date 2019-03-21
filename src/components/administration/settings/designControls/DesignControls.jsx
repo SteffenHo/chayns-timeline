@@ -30,6 +30,7 @@ import {
     DEFAULT_DESCRIPTION,
     DEFAULT_HEADLINE, DEFAULT_IMAGES, SETTINGS_EDITOR_COLOR, SETTINGS_EDITOR_DATE
 } from '../../../../constants/text';
+import { textString } from '../../../../utils/textString';
 
 class DesignControls extends PureComponent {
     constructor(props) {
@@ -77,6 +78,7 @@ class DesignControls extends PureComponent {
 
     render() {
         const {visible, includeSources, color, onChange, sources, formatId} = this.props;
+        const { headline, text } = textString.defaulrText
 
 
         return (
@@ -150,8 +152,8 @@ class DesignControls extends PureComponent {
                                 <BlogItem
                                     postingId={1234}
                                     tappId={1234}
-                                    headline={DEFAULT_HEADLINE}
-                                    description={DEFAULT_DESCRIPTION}
+                                    headline={headline}
+                                    description={text}
                                     images={fromJS(DEFAULT_IMAGES)}
                                     startTimestamp={Date.now()}
                                 />
