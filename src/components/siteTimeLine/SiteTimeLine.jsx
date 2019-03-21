@@ -114,6 +114,7 @@ class SiteTimeLine extends PureComponent {
                         postingId={element.get('id')}
                         images={element.get('imageList')}
                         tappId={element.get('tappId')}
+                        date={element.get('startTimestamp')}
                     />
                 </TimelineItem>
             );

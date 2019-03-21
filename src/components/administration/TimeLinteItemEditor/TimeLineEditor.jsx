@@ -17,7 +17,12 @@ import { toDate } from '../../../utils/timeHelper';
 class TimeLineEditor extends PureComponent {
     constructor(props) {
         super(props);
-        this.state = { images: [] };
+        this.state = {
+            images: props.images,
+            selectedDate: props.date,
+            headline: props.headline,
+            description: props.description
+        };
     }
 
     onChange = (validFiles) => {
@@ -86,6 +91,7 @@ class TimeLineEditor extends PureComponent {
 
     render() {
         const { images } = this.state;
+        const { headline, description, id } = this.props;
         const list = this.getTappList();
         console.log('list', list);
         return (
@@ -94,11 +100,13 @@ class TimeLineEditor extends PureComponent {
                 <Input
                     placeholder="Überschrift"
                     className="headline"
+                    defaultValue={headline}
                     onChange={(data) => this.setState({headline: data})}
                 />
                 <TextArea
                     placeholder="Text"
                     autogrow
+                    defaultValue={description}
                     onChange={(data) => this.setState({description: data})}
 
                 />
@@ -145,12 +153,14 @@ class TimeLineEditor extends PureComponent {
                     onDelete={this.onDelete}
                 />
                 <div className="addButton">
-                <Button
-                    disabled={!images}
-                    onClick={this.save}
-                >
-                    {'Hinzufügen'}
-                </Button>
+                    {id ?
+                        <Button
+                            disabled={!images}
+                            onClick={this.save}
+                        >
+                            {'Hinzufügen'}
+                        </Button>
+                        : false}
                 </div>
             </div>
         );
@@ -158,10 +168,22 @@ class TimeLineEditor extends PureComponent {
 }
 
 TimeLineEditor.propTypes = {
-    saveBlog: PropTypes.func.isRequired
+    saveBlog: PropTypes.func.isRequired,
+    headline: PropTypes.string,
+    description: PropTypes.string,
+    images: PropTypes.array,
+    date: PropTypes.number,
+    tappId: PropTypes.number,
+    id: PropTypes.number
 };
 
 TimeLineEditor.defaultProps = {
+    headline: '',
+    description: '',
+    images: [],
+    date: undefined,
+    tappId: undefined,
+    id: 0
 
 };
 
