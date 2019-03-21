@@ -1,8 +1,9 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Gallery from 'chayns-components/lib/react-chayns-gallery/component/Gallery';
+import Icon from 'chayns-components/lib/react-chayns-icon/component/Icon';
 import TextTruncate from 'react-text-truncate';
-import { fromJS } from 'immutable';
+import { faEllipsisV } from '@fortawesome/free-solid-svg-icons/faEllipsisV';
 
 import './blogItem.scss'
 
@@ -27,6 +28,9 @@ class BlogItem extends PureComponent {
         const readMore = (<a onClick={() => this.selectTapp(postingId, tappId)}>Mehr anzeigen</a>);
     return (
             <div>
+                <div className="edit-container">
+                    <Icon icon={faEllipsisV}/>
+                </div>
                <h1>{headline}</h1>
                 <TextTruncate
                     line={5}
