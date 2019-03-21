@@ -12,6 +12,7 @@ export default {
         host: '0.0.0.0',
         port: 8080,
         historyApiFallback: true,
+        https: true,
         compress: true,
         disableHostCheck: true,
         headers: {
