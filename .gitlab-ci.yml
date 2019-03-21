@@ -1,0 +1,116 @@
+image: node:10-alpine
+
+variables:
+  CONTAINER_IMAGE: registry.gitlab.com/$CI_PROJECT_PATH
+
+stages:
+  - build
+  - publish
+  - deploy
+
+
+build-qa:
+  stage: build
+  only:
+    - qa
+    - web
+  tags:
+    - node
+  artifacts:
+    paths:
+      - build/*
+      - package.json
+      - package-lock.json
+      - .npmrc
+    expire_in: 2 days
+    when: on_success
+  script:
+    - npm ci
+    - npm run build:staging
+
+publish-docker-qa:
+  image: docker:stable
+  before_script:
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+  stage: publish
+  only:
+    - qa
+    - web
+  tags:
+    - docker
+  dependencies:
+    - build-qa
+  script:
+    - docker pull $CONTAINER_IMAGE:qa || true
+    - docker build --cache-from $CONTAINER_IMAGE:qa --tag $CONTAINER_IMAGE:$CI_COMMIT_SHA --tag $CONTAINER_IMAGE:qa .
+    - docker push $CONTAINER_IMAGE:$CI_COMMIT_SHA
+    - docker push $CONTAINER_IMAGE:qa
+
+deploy-qa:
+  image: registry.gitlab.com/michael-braun/docker/k8-proxy/k8-proxy-cli:latest
+  stage: deploy
+  only:
+    - qa
+  tags:
+    - node
+  dependencies:
+    - publish-docker-qa
+  environment:
+    name: qa
+    url: https://static-qa.vision-server.net/chayns-timeline/v0.1
+  script:
+    - k8-proxy --url="$K8_URL" --username="$K8_USERNAME" --key="$K8_KEY" update container --namespace="$K8_NAMESPACE_QA" --deployment="$K8_DEPLOYMENT_QA" --container="$K8_CONTAINER_QA" --image="$CONTAINER_IMAGE:$CI_COMMIT_SHA"
+
+
+
+build:
+  stage: build
+  only:
+    - master
+    - web
+  tags:
+    - node
+  artifacts:
+    paths:
+      - build/*
+      - package.json
+      - package-lock.json
+      - .npmrc
+    expire_in: 2 days
+    when: on_success
+  script:
+    - npm ci
+    - npm run build
+
+publish-docker:
+  image: docker:stable
+  before_script:
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+  stage: publish
+  only:
+    - master
+    - web
+  tags:
+    - docker
+  dependencies:
+    - build
+  script:
+    - docker pull $CONTAINER_IMAGE:latest || true
+    - docker build --cache-from $CONTAINER_IMAGE:latest --tag $CONTAINER_IMAGE:$CI_COMMIT_SHA --tag $CONTAINER_IMAGE:latest .
+    - docker push $CONTAINER_IMAGE:$CI_COMMIT_SHA
+    - docker push $CONTAINER_IMAGE:latest
+
+deploy-production:
+  image: registry.gitlab.com/michael-braun/docker/k8-proxy/k8-proxy-cli:latest
+  stage: deploy
+  only:
+    - master
+  tags:
+    - node
+  dependencies:
+    - publish-docker
+  environment:
+    name: production
+    url: https://static.vision-server.net/chayns-timeline/v0.1
+  script:
+    - k8-proxy --url="$K8_URL" --username="$K8_USERNAME" --key="$K8_KEY" update container --namespace="$K8_NAMESPACE" --deployment="$K8_DEPLOYMENT" --container="$K8_CONTAINER" --image="$CONTAINER_IMAGE:$CI_COMMIT_SHA"
